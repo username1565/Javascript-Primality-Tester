@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0044)http://icosahedral.net/script/primality.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="stylesheet" type="text/css" href="./index_files/mainstyle.css">
+ <link rel="icon" type="image/x-icon" href="./index_files/favicon.ico">
+ <link rel="shortcut icon" type="image/x-icon" href="./index_files/favicon.ico">
+ <script type="text/javascript" src="./index_files/BigInt.js"></script>
+ <script type="text/javascript">
+	//Miller-Rabin algorithm, using bigInt;
+	
+    // <![CDATA[
+
+        function getRandInt(min, max)
+        {
+          return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        //Performs a 50-round Rabin primality test on x
+        //Returns true if (probably) prime, false otherwise.
+        function isPrime(x)
+        {
+            if(negative(x) || isZero(x))
+            {return false;}
+ 
+            if(equals(x,int2bigInt(1,10,10)))
+            {return false;}
+
+            if(equals(x,int2bigInt(2,10,10)))
+            {return true;}
+
+            if(modInt(x,2) == 0)
+            {return false;}
+
+            //alert(millerRabin(x,13));
+			var rounds = 50;
+            for(var i = 0; i<rounds; i++)
+            {
+                var max = greater(x,int2bigInt(1000000000,40,0)) ? 
+                         1000000000 : 
+                         parseInt(bigInt2str(x,10));
+
+                var rand = getRandInt(1,max);
+
+
+                if(modInt(x,rand) == 0 || modInt(x,rand) == 1)
+                {continue;}
+
+                if(!millerRabin(x,rand))
+                {return false;}
+            }
+            return true;
+        }
+
+        
+        function testPrime()
+        {
+            var str = document.getElementById("numfield").value;
+            var resultDiv = document.getElementById("primalityresult");
+
+            //Indicate that calculation is in progress...
+            resultDiv.innerHTML = "Calculating...";
+            resultDiv.style.color = "black";
+
+            //Ugly hack - wait 0 seconds to allow this thread to end so that 
+            //changes to innerHTML will be discovered by the browser.
+            //There are more correct ways to do this through DOM methods.
+            setTimeout('testPrimeHelper("' + str + '")', 0);
+        }
+
+        //Actually perform the test and update of the display
+        function testPrimeHelper(str)
+        {
+           var resultDiv = document.getElementById("primalityresult");
+
+           //Ensure the input is a valid number
+           var validChars = "0123456789";
+           for (var i = 0; i < str.length; i++) 
+           { 
+               c = str.charAt(i); 
+               if(validChars.indexOf(c) == -1) 
+               {
+                   resultDiv.innerHTML = "INVALID NUMBER";
+                   resultDiv.style.color = "red";
+                   return false;
+               }
+           }
+           
+           //Perform test
+           var x = str2bigInt(str,10,str.length * 4, 0);
+           if(isPrime(x))
+           {
+               resultDiv.innerHTML = bigInt2str(x, 10) + " is a PRIME NUMBER";
+               resultDiv.style.color = "green";
+           }
+           else
+           {
+               resultDiv.innerHTML = "NOT PRIME";
+               resultDiv.style.color = "red";
+           }
+        }
+
+    // ]]>
+	
+	function next_prime(x){
+		if(!(x[0]&1)){x = addInt(x, 1);}
+		else{x = addInt(x, 2);}
+
+		if(isPrime(x)){return x;}
+		else{
+			while(true){
+				x = addInt(x, 2);
+				if(isPrime(x)){return x;}
+			}
+		}
+	}
+
+
+/*
+//example for usage Miller-Rabin function:
+
+//get primes p from array, for which (2p+1) is prime number too;
+var arr_primes = [//different primes.
+'111119','111121','111127','111143','111149','111187','111191','111211','111217','111227',
+'111229','111253','111263','111269','111271','111301','111317','111323','111337','111341',
+'111347','111373','111409','111427','111431','111439','111443','111467','111487','111491',
+'111493','111497','111509','111521','111533','111539','111577','111581','111593','111599',
+'111611','111623','111637','111641','111653','111659','111667','111697','111721','111731',
+'111733','111751','111767','111773','111779','111781','111791','111799','111821','111827',
+'111829','111833','111847','111857','111863','111869','111871','111893','111913','111919',
+'111949','111953','111959','111973','111977','111997','112019','112031','112061','112067',
+'112069','112087','112097','112103','112111','112121','112129','112139','112153','112163',
+'112181','112199','112207','112213','112223','112237','112241','112247','112249','112253',
+'112261','112279','112289','112291','112297','112303','112327','112331','112337','112339',
+'112349','112361','112363','112397','112403','112429','112459','112481','112501','112507',
+'112543','112559','112571'
+];
+
+function if_2p_plus_one_is_prime(arr){
+	var responce = [];
+	for(u=0;u<arr_primes.length;u++){
+		var test = next_prime(str2bigInt(arr_primes[u],10,arr_primes[u].length * 4, 0));
+		var test2and1 = add(mult(test, str2bigInt('2',10,'2'.length*4, 0)), str2bigInt('1',10,'1'.length*4, 0));
+		if(isPrime(test2and1)){ //Miller-Rabin test here inside in the cycle
+			//responce.push(bigInt2str(test2and1, 10));
+			responce.push(arr_primes[u]);
+		}
+	}
+	console.log(responce); //display result array in console.log()
+}
+//run this:
+if_2p_plus_one_is_prime(arr_primes);
+*/
+
+	var gen_primes = function(){
+		var start = document.getElementById("numfield2").value;
+        var numbers = parseInt(document.getElementById("numbers").value);
+        var resultDiv2 = document.getElementById("primalityresult2");
+
+           //Ensure the input is a valid number
+           var validChars = "0123456789";
+           for (var i = 0; i < start.length; i++) 
+           { 
+               c = start.charAt(i); 
+               if(validChars.indexOf(c) == -1) 
+               {
+                   resultDiv2.innerHTML = "INVALID NUMBER";
+                   resultDiv2.style.color = "red";
+                   return false;
+               }
+           }
+           
+           //Perform test
+           var x = str2bigInt(start,10,start.length * 4, 0);
+           //console.log(bigInt2str(x, 10));
+		   var current_prime_number = 0;
+		   
+		   //multistring commentary
+		   resultDiv2.innerHTML = '\
+<pre>\
+\\t - tab-symbol, tabulation. 10 primes in row. Table is copyable to txt file.<br>\
+prime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime&#60;br&#62;<br>\
+prime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime\\tprime&#60;br&#62;<br>\
+...</pre><br>';
+
+			//milliseconds for each call
+			var milliseconds = 10;
+			
+			while (current_prime_number < numbers) {	//while current number !== numbers
+				(function(current_prime_number) {
+					setTimeout(function() {				//settimeout.
+					x = next_prime(x);
+						if(isPrime(x)){
+							resultDiv2.innerHTML += bigInt2str(x, 10);
+							if((current_prime_number+1)%10==0){
+								resultDiv2.innerHTML += '<BR>'; //\n, LF
+							}
+							else{
+								resultDiv2.innerHTML += '\t';
+							}
+						}
+					}, milliseconds * current_prime_number)	
+				})(current_prime_number++)
+			}
+	};
+    </script>  
+
+ <title>Javascript Primality Tester</title>
+
+</head>
+
+<body onload="testPrime();"> 
+
+ <div id="toppanel">
+  <div class="shadepanelleft"><div class="shadepanelright" title="Source: http://icosahedral.net/script/primality.html">
+	<a href="http://icosahedral.net/script/primality.html">
+		<img src="./index_files/icos96.png" style="vertical-align:middle;" alt="">
+		&nbsp;&nbsp;&nbsp; Javascript Primality Tester &nbsp;&nbsp;&nbsp;
+		<img src="./index_files/icos96.png" style="vertical-align:middle;" alt="">
+	</a>
+  </div></div>
+ </div>
+
+<div>
+ <div id="content"> 
+  <h2> Javascript Primality Tester </h2>
+  <form action="" onsubmit="return false;">
+   Test a number here: <br>
+   <input id="numfield" name="numfield" type="text" size="50" value="123456789123456789123456789123456789123456821" onkeyup="testPrime();" title="BigInteger (number or text string.)" placeholder="Type here the number for check prilamity.">
+  </form>
+  <div id="primalityresult" style="color: green;">PRIME</div>
+  <hr>
+  
+  <h2> Javascript Primality Generator </h2>
+  <form method="POST" action="" onsubmit="gen_primes(); return false;">
+   Start number: <br>
+   <input id="numfield2" name="numfield2" type="text" size="25" value="111111" title="Wrom which? BigInteger (number or text string.)" placeholder="Enter a start number."><br>
+   Numbers: <br>
+   <input id="numbers" name="numbers" type="number" step="1" min="1" max="10000000" value="123" title="How many? Number from 1 to 10M primes." placeholder="Numbers?">
+   <input type="submit" value="submit">
+  </form>
+  <div id="primalityresult2" style="color: green;"></div>
+  <hr>
+  You must have Javascript enabled in your browser for the prime checker to work.
+
+  <h4> Algorithm </h4>
+  The above prime checker performs <big><b>50 rounds</b></big> of a Miller-Rabin primality test, a fast probabilistic prime checking algorithm.<br>
+  The algorithm is guaranteed not to produce false negatives - if a number is declared composite, then it is definitely composite.<br>
+  However, with astronomically small probability, a false positive may occur - it is possible (but extraordinarily unlikely)<br>
+  that a number declared prime is actually composite.<br>
+  <small><pre>
+  Different resources say about, errors probability for MR algorithm is: (1/4)^k = 4^(-k);
+  or (1/N)^k = N^(-k), where N - number, k - rounds.</pre></small>
+ </div>
+</div>
+
+<div id="bottompanel">
+<div class="shadepanelleft"></div>
+</div>
+</body>
+<a href="./index_files/JS_prime_test_and_generator_Miller-Rabin_bigInt.zip">Download ZIP-archive with this.</a>
+</html>

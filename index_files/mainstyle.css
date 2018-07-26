@@ -1,0 +1,102 @@
+body
+{
+	background: #efeff7;
+	font-family: "palatino linotype", serif;
+}
+#toppanel
+{
+	position: relative;
+	margin-top:0; 
+	margin-right:auto; 
+	margin-bottom:0; 
+	margin-left: auto;
+	font-size: 2.5em;
+	text-align: center;
+	line-height: 96px;
+	background-color: #efeff7;
+} 
+
+div.shadepanelleft
+{
+	border-style: outset;
+	border-color: #dfdfff;
+	border-width: 3px;
+	background-image: url(shade.png);
+	background-repeat: repeat-y;
+}
+div.shadepanelright
+{
+	background-image: url(shaderev.png);
+	background-repeat: repeat-y;
+	background-position: 100% 0%;
+	padding: 12px;
+}
+#bottompanel
+{
+	clear: both;
+	position: relative;
+	margin-top:6; 
+	margin-right:auto; 
+	margin-bottom:0; 
+	margin-left: auto;
+	font-size: x-small;
+	text-align: right;
+	background-color: #efeff7;
+} 
+
+
+#sidepanel
+{
+	float: left;
+	width: 180px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	margin-left: 0px;
+	padding: 12px;
+	background-image: url(shade.png);
+	background-repeat: repeat-y;
+	border-style: outset;
+	border-color: #dfdfff;
+	border-width: 2px;
+	font-weight: bold;
+	line-height: 2.0em;
+}
+
+#content
+{
+	margin-top: 8px;
+	margin-left: 220px;
+	padding-left: 12px;
+	padding-right: 24px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+#menu
+{
+	padding:0;
+	margin:0;
+}
+
+#menu li
+{
+	list-style-type: none;
+}
+
+/*vemove underline from text in the link*/
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+	color: hotpink;
+}
+
+a:active {
+    text-decoration: none;
+}
