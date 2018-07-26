@@ -14,4 +14,4 @@ Read this code you can here: https://username1565.github.io/Javascript-Primality
   - liks underline removed.
   - link to zip-archive - added.
   
-Source site: [here](http://icosahedral.net/script/primality.html):
+Source site: [here](http://icosahedral.net/script/primality.html)
