@@ -9,6 +9,8 @@ Source here: http://icosahedral.net/script/primality.html
   - liks underline removed.
   - link to zip-archive - added.
 
-  You can open this from Internet here: https://username1565.github.io/Javascript-Primality-Tester/
-  Source code is available by link to zip-archive, inside.
-  Read this code you can here: https://username1565.github.io/Javascript-Primality-Tester/
+You can open this from Internet here: https://username1565.github.io/Javascript-Primality-Tester/
+ 
+Source code is available by link to zip-archive, inside.
+
+Read this code you can here: https://username1565.github.io/Javascript-Primality-Tester/
